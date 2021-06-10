@@ -1,9 +1,6 @@
 package com.example.demo.web;
 
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/greeting")
@@ -34,5 +31,10 @@ public class HelloController {
     @RequestMapping(value = "/user_greeting", method = RequestMethod.POST)
     public String printUserGreeting(@RequestParam String fname, @RequestParam String lname) {
         return "<h1>Hello there, " + fname + " " + lname + "</h1>";
+    }
+
+    @RequestMapping(value = "/orders/{id}", method = RequestMethod.GET)
+    public String getOrderById(@PathVariable String id) {
+        return "Order ID: " + id;
     }
 }
