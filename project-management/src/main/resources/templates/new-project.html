@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+</head>
+<body>
+    <div class="container">
+        <form action="/projects/save" th:object="${project}" method="post">
+            <div class="row">
+                <input type="text" placeholder="Project name" th:field="${project.name}">
+            </div>
+            <div class="row">
+                <select th:field="${project.stage}">
+                    <option th:value="NOTSTARTED">Not started</option>
+                    <option th:value="INPROGRESS">In progress</option>
+                    <option th:value="COMPLETED">Completed</option>
+                </select>
+            </div>
+            <div class="row">
+                <textarea type="text" placeholder="Enter project description" th:field="${project.description}"></textarea>
+            </div>
+            <div class="row">
+                <button type="submit">Create project</button>
+            </div>
+        </form>
+    </div>
+</body>
+</html>
