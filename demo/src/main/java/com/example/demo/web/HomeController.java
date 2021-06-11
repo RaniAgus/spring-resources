@@ -5,6 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 public class HomeController {
@@ -17,7 +18,16 @@ public class HomeController {
     }
 
     @RequestMapping(value = "/create", method = RequestMethod.POST)
-    public String processFormData(Model model, User user) { // Simplemente con mencionar el user ya lo tenemos
+    public String processFormData(User user, RedirectAttributes attr) {
+        // Insert data in database
+        // ...
+        // Redirige la página junto con su contenido
+        attr.addFlashAttribute("user", user);
+        return "redirect:/display";
+    }
+
+    @RequestMapping("/display")
+    public String displayFormData(Model model, User user) {
         // En teoría no hace falta agregar el Model ni pasarle el User, pero creo que es mejor
         model.addAttribute("user", user);
         return "result";
