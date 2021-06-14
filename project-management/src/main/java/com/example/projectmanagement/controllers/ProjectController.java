@@ -43,15 +43,11 @@ public class ProjectController {
     }
 
     @PostMapping("/save")
-    public String createProject(Model model, Project project, @RequestParam List<Long> employees) {
+    public String createProject(Model model, Project project) {
         projectRepository.save(project);
 
-        // No se pueden obtener los empleados del proyecto, pero sí viene por query una lista con sus ids
-        // Busco todos los empleados según los ids, les asigno a cada uno el proyecto y los guardo
-        employeeRepository.findAllById(employees).forEach(employee -> {
-            employee.setProject(project);
-            employeeRepository.save(employee);
-        });
+        // En las relaciones "varios a varios" Spring es lo suficientemente inteligente para agregarlo en la tabla
+        // intermedia
 
         // Se usan los redirects para evitar que entren formularios duplicados al hacer click en submit varias veces
         return "redirect:/projects";
