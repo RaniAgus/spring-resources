@@ -8,12 +8,14 @@
   <table class="table">
     <thead>
     <tr>
+      <th scope="col">#</th>
       <th scope="col">Project name</th>
       <th scope="col">Project stage</th>
     </tr>
     </thead>
     <tbody>
     <tr th:each="project : ${projects}">
+      <th scope="row" th:text="${project.projectId}"></th>
       <td th:text="${project.name}"></td>
       <td th:text="${project.stage}"></td>
     </tr>
