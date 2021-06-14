@@ -6,13 +6,13 @@
 <div class="container">
     <form action="/employees/save" th:object="${employee}" method="post">
         <div class="row">
-            <input type="text" placeholder="employee first name" th:field="${employee.fname}">
+            <input type="text" placeholder="employee first name" th:field="*{fname}">
         </div>
         <div class="row">
-            <input type="text" placeholder="employee last name" th:field="${employee.lname}">
+            <input type="text" placeholder="employee last name" th:field="*{lname}">
         </div>
         <div class="row">
-            <input type="text" placeholder="employee email" th:field="${employee.email}">
+            <input type="text" placeholder="employee email" th:field="*{email}">
         </div>
         <div class="row">
             <button type="submit">Create project</button>

@@ -14,8 +14,12 @@ public class Employee {
 
     private String email;
 
-    @ManyToOne
-    @JoinColumn(name = "projectId")
+    // cascade: Si ocurre algo con el padre (el proyecto), ocurre algo en los hijos (los empleados)
+    @ManyToOne(
+            cascade = { CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.PERSIST },
+            fetch = FetchType.LAZY
+    )
+    @JoinColumn(name = "project_id")
     private Project project;
 
     public Employee() {
@@ -58,5 +62,13 @@ public class Employee {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public Project getProject() {
+        return project;
+    }
+
+    public void setProject(Project project) {
+        this.project = project;
     }
 }

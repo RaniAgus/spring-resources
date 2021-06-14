@@ -1,5 +1,6 @@
 package com.example.projectmanagement.controllers;
 
+import com.example.projectmanagement.dao.IEmployeeRepository;
 import com.example.projectmanagement.dao.IProjectRepository;
 import com.example.projectmanagement.entities.Employee;
 import com.example.projectmanagement.entities.Project;
@@ -9,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -16,10 +18,12 @@ import java.util.List;
 @RequestMapping("/projects")
 public class ProjectController {
     IProjectRepository projectRepository;
+    IEmployeeRepository employeeRepository;
 
     @Autowired // Spring inyecta la dependencia
-    public ProjectController(IProjectRepository projectRepository) {
+    public ProjectController(IProjectRepository projectRepository, IEmployeeRepository employeeRepository) {
         this.projectRepository = projectRepository;
+        this.employeeRepository = employeeRepository;
     }
 
     @GetMapping
@@ -34,12 +38,20 @@ public class ProjectController {
     @GetMapping("/new")
     public String displayProjectForm(Model model) {
         model.addAttribute("project", new Project());
+        model.addAttribute("employees", employeeRepository.findAll());
         return "projects/new-project";
     }
 
     @PostMapping("/save")
-    public String createProject(Model model, Project project) {
+    public String createProject(Model model, Project project, @RequestParam List<Long> employees) {
         projectRepository.save(project);
+
+        // No se pueden obtener los empleados del proyecto, pero sí viene por query una lista con sus ids
+        // Busco todos los empleados según los ids, les asigno a cada uno el proyecto y los guardo
+        employeeRepository.findAllById(employees).forEach(employee -> {
+            employee.setProject(project);
+            employeeRepository.save(employee);
+        });
 
         // Se usan los redirects para evitar que entren formularios duplicados al hacer click en submit varias veces
         return "redirect:/projects";
