@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.util.List;
+
 @Controller
 @RequestMapping("/employees")
 public class EmployeeController {
@@ -17,6 +19,14 @@ public class EmployeeController {
     @Autowired
     public EmployeeController(IEmployeeRepository employeeRepository) {
         this.employeeRepository = employeeRepository;
+    }
+
+    @GetMapping
+    public String listEmployees(Model model) {
+        List<Employee> employees = employeeRepository.findAll();
+        model.addAttribute("employees", employees);
+
+        return "employees/list-employees";
     }
 
     @GetMapping("/new")
@@ -28,6 +38,6 @@ public class EmployeeController {
     @PostMapping("/save")
     public String saveEmployeeForm(Model model, Employee employee) {
         employeeRepository.save(employee);
-        return "redirect:/employees/new";
+        return "redirect:/employees";
     }
 }

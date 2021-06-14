@@ -2,45 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head th:replace="layouts :: header"></head>
 <body>
- <!-- el nombre de la etiqueta debe coincidir con el que está en layouts.html -->
-  <nav th:replace="layouts :: navbar"></nav>
-  <div class="container">
-    <h4>Current projects</h4>
-    <table class="table">
-      <thead>
-        <tr>
-          <th scope="col">Project name</th>
-          <th scope="col">Project stage</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr th:each="project : ${projects}">
-          <td th:text="${project.name}"></td>
-          <td th:text="${project.stage}"></td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  <div class="container mt-3">
-    <h4>Current Employees</h4>
-    <table class="table">
-      <thead>
-      <tr>
-        <th scope="col">#</th>
-        <th scope="col">Employee first name</th>
-        <th scope="col">Employee last name</th>
-        <th scope="col">Employee email</th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr th:each="employee : ${employees}">
-        <th scope="row" th:text="${employee.employeeId}"></th>
-        <td th:text="${employee.fname}"></td>
-        <td th:text="${employee.lname}"></td>
-        <td th:text="${employee.email}"></td>
-      </tr>
-      </tbody>
-    </table>
-  </div>
+<!-- el nombre de la etiqueta debe coincidir con el que está en layouts.html -->
+<nav th:replace="layouts :: navbar"></nav>
 </body>
 </html>
