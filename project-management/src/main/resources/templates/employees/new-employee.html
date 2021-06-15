@@ -6,10 +6,10 @@
 <div class="container">
     <form action="/employees/save" th:object="${employee}" method="post">
         <div class="row">
-            <input type="text" placeholder="employee first name" th:field="*{fname}">
+            <input type="text" placeholder="employee first name" th:field="*{firstName}">
         </div>
         <div class="row">
-            <input type="text" placeholder="employee last name" th:field="*{lname}">
+            <input type="text" placeholder="employee last name" th:field="*{lastName}">
         </div>
         <div class="row">
             <input type="text" placeholder="employee email" th:field="*{email}">

@@ -6,12 +6,12 @@ import java.util.List;
 @Entity
 public class Employee {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long employeeId;
 
-    private String fname;
+    private String firstName;
 
-    private String lname;
+    private String lastName;
 
     private String email;
 
@@ -31,9 +31,9 @@ public class Employee {
 
     }
 
-    public Employee(String fname, String lname, String email) {
-        this.fname = fname;
-        this.lname = lname;
+    public Employee(String firstName, String lastName, String email) {
+        this.firstName = firstName;
+        this.lastName = lastName;
         this.email = email;
     }
 
@@ -45,20 +45,20 @@ public class Employee {
         this.employeeId = employeeId;
     }
 
-    public String getFname() {
-        return fname;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setFname(String fname) {
-        this.fname = fname;
+    public void setFirstName(String fname) {
+        this.firstName = fname;
     }
 
-    public String getLname() {
-        return lname;
+    public String getLastName() {
+        return lastName;
     }
 
-    public void setLname(String lname) {
-        this.lname = lname;
+    public void setLastName(String lname) {
+        this.lastName = lname;
     }
 
     public String getEmail() {
