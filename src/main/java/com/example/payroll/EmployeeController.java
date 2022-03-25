@@ -20,9 +20,11 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 class EmployeeController {
 
   private final EmployeeRepository repository;
+  private final EmployeeModelAssembler assembler;
 
-  EmployeeController(EmployeeRepository repository) {
+  EmployeeController(EmployeeRepository repository, EmployeeModelAssembler assembler) {
     this.repository = repository;
+    this.assembler = assembler;
   }
 
 
@@ -32,10 +34,7 @@ class EmployeeController {
   CollectionModel<EntityModel<Employee>> all() {
 
     List<EntityModel<Employee>> employees = repository.findAll().stream()
-        // WARNING: Hay lógica repetida acá
-        .map(employee -> EntityModel.of(employee,
-            linkTo(methodOn(EmployeeController.class).one(employee.getId())).withSelfRel(),
-            linkTo(methodOn(EmployeeController.class).all()).withRel("employees")))
+        .map(assembler::toModel)
         .collect(Collectors.toList());
 
     // CollectionModel sirve para agregar links a una colección de varios EntityModel
@@ -58,13 +57,7 @@ class EmployeeController {
     Employee employee = repository.findById(id)
         .orElseThrow(() -> new EmployeeNotFoundException(id));
 
-    // Los links nos permiten saber cómo interactuar con este servicio
-    return EntityModel.of(employee,
-        // Esto agrega un link hacia el mismo empleado (key = "self")
-        linkTo(methodOn(EmployeeController.class).one(id)).withSelfRel(),
-        // Esto agrega un link hacia la colección completa de empleados (key = "employees")
-        linkTo(methodOn(EmployeeController.class).all()).withRel("employees")
-    );
+    return assembler.toModel(employee);
   }
 
   @PutMapping("/employees/{id}")
