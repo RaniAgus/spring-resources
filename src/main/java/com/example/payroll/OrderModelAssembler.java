@@ -18,6 +18,13 @@ class OrderModelAssembler implements RepresentationModelAssembler<Order, EntityM
         linkTo(methodOn(OrderController.class).one(order.getId())).withSelfRel(),
         linkTo(methodOn(OrderController.class).all()).withRel("orders"));
 
+    // Conditional links based on state of the order
+
+    if (order.getStatus() == Status.IN_PROGRESS) {
+      orderModel.add(linkTo(methodOn(OrderController.class).cancel(order.getId())).withRel("cancel"));
+      orderModel.add(linkTo(methodOn(OrderController.class).complete(order.getId())).withRel("complete"));
+    }
+
     return orderModel;
   }
 }

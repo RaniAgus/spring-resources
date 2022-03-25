@@ -2,6 +2,10 @@ package com.example.payroll;
 
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.MediaTypes;
+import org.springframework.hateoas.mediatype.problem.Problem;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -53,4 +57,45 @@ class OrderController {
         .created(linkTo(methodOn(OrderController.class).one(newOrder.getId())).toUri()) //
         .body(assembler.toModel(newOrder));
   }
+
+  @DeleteMapping("/orders/{id}/cancel")
+  ResponseEntity<?> cancel(@PathVariable Long id) {
+
+    Order order = orderRepository.findById(id) //
+        .orElseThrow(() -> new OrderNotFoundException(id));
+
+    if (order.getStatus() != Status.IN_PROGRESS) {
+      return ResponseEntity //
+          .status(HttpStatus.METHOD_NOT_ALLOWED) //
+          // Especifica en el header que se devolvió un error
+          .header(HttpHeaders.CONTENT_TYPE, MediaTypes.HTTP_PROBLEM_DETAILS_JSON_VALUE) //
+          // Problem es un wrapper de errores compatibles con Hypermedia
+          .body(Problem.create() //
+              .withTitle("Method not allowed") //
+              .withDetail("You can't cancel an order that is in the " + order.getStatus() + " status"));
+    }
+
+    order.setStatus(Status.CANCELLED);
+    return ResponseEntity.ok(assembler.toModel(orderRepository.save(order)));
+  }
+
+  @PutMapping("/orders/{id}/complete")
+  ResponseEntity<?> complete(@PathVariable Long id) {
+
+    Order order = orderRepository.findById(id) //
+        .orElseThrow(() -> new OrderNotFoundException(id));
+
+    if (order.getStatus() != Status.IN_PROGRESS) {
+      return ResponseEntity //
+          .status(HttpStatus.METHOD_NOT_ALLOWED) //
+          .header(HttpHeaders.CONTENT_TYPE, MediaTypes.HTTP_PROBLEM_DETAILS_JSON_VALUE) //
+          .body(Problem.create() //
+              .withTitle("Method not allowed") //
+              .withDetail("You can't complete an order that is in the " + order.getStatus() + " status"));
+    }
+
+    order.setStatus(Status.COMPLETED);
+    return ResponseEntity.ok(assembler.toModel(orderRepository.save(order)));
+  }
+
 }
