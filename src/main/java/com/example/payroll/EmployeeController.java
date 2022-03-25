@@ -2,6 +2,7 @@ package com.example.payroll;
 
 import java.util.List;
 
+import org.springframework.hateoas.EntityModel;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -9,6 +10,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @RestController
 class EmployeeController {
@@ -36,10 +40,17 @@ class EmployeeController {
   // Single item
 
   @GetMapping("/employees/{id}")
-  Employee one(@PathVariable Long id) {
-
-    return repository.findById(id)
+  EntityModel<Employee> one(@PathVariable Long id) {
+    Employee employee = repository.findById(id)
         .orElseThrow(() -> new EmployeeNotFoundException(id));
+
+    // Los links nos permiten saber cómo interactuar con este servicio
+    return EntityModel.of(employee,
+        // Esto agrega un link hacia el mismo empleado (key = "self")
+        linkTo(methodOn(EmployeeController.class).one(id)).withSelfRel(),
+        // Esto agrega un link hacia la colección completa de empleados (key = "employees")
+        linkTo(methodOn(EmployeeController.class).all()).withRel("employees")
+    );
   }
 
   @PutMapping("/employees/{id}")

@@ -1,5 +1,7 @@
 # spring-rest-tutorial
 
+## Requests
+
 Consultar lista de empleados:
 ```
 curl -v localhost:8080/employees | json_pp
@@ -31,4 +33,24 @@ Borrar un empleado:
 
 ```
 curl -X DELETE localhost:8080/employees/3
+```
+
+## Responses
+
+Representación de un empleado en REST:
+
+```json
+{
+  "id": 1,
+  "name": "Bilbo Baggins",
+  "role": "burglar",
+  "_links": {
+    "self": {
+      "href": "http://localhost:8080/employees/1"
+    },
+    "employees": {
+      "href": "http://localhost:8080/employees"
+    }
+  }
+}
 ```
