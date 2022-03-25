@@ -42,6 +42,8 @@ Representación de un empleado en REST:
 ```json
 {
   "id": 1,
+  "firstName": "Bilbo",
+  "lastName": "Baggins", 
   "name": "Bilbo Baggins",
   "role": "burglar",
   "_links": {
@@ -71,6 +73,8 @@ Representación de una lista de empleados en REST:
                }
             },
             "id" : 1,
+            "firstName": "Bilbo",
+            "lastName": "Baggins",
             "name" : "Bilbo Baggins",
             "role" : "burglar"
          },
@@ -84,6 +88,8 @@ Representación de una lista de empleados en REST:
                }
             },
             "id" : 2,
+            "firstName": "Frodo",
+            "lastName": "Baggins",
             "name" : "Frodo Baggins",
             "role" : "thief"
          }
