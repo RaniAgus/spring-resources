@@ -54,3 +54,45 @@ Representación de un empleado en REST:
   }
 }
 ```
+
+Representación de una lista de empleados en REST:
+
+```json
+{
+   "_embedded" : {
+      "employeeList" : [
+         {
+            "_links" : {
+               "employees" : {
+                  "href" : "http://localhost:8080/employees"
+               },
+               "self" : {
+                  "href" : "http://localhost:8080/employees/1"
+               }
+            },
+            "id" : 1,
+            "name" : "Bilbo Baggins",
+            "role" : "burglar"
+         },
+         {
+            "_links" : {
+               "employees" : {
+                  "href" : "http://localhost:8080/employees"
+               },
+               "self" : {
+                  "href" : "http://localhost:8080/employees/2"
+               }
+            },
+            "id" : 2,
+            "name" : "Frodo Baggins",
+            "role" : "thief"
+         }
+      ]
+   },
+   "_links" : {
+      "self" : {
+         "href" : "http://localhost:8080/employees"
+      }
+   }
+}
+```
