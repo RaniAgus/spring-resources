@@ -1,5 +1,7 @@
 # spring-rest-videotutorial
 
+- [Bootstrap a Simple REST API - with Spring Data REST and Spring Boot 2](https://www.youtube.com/watch?v=-f-7l8X716k)
+
 ## Actuator
 
 Consultar todos los Actuators disponibles:
